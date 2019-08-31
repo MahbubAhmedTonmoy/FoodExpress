@@ -1,0 +1,56 @@
+﻿@model List<FurnitureHouse.Models.Products>
+
+@if (Model.Count > 0)
+{
+	<table class="table-striped" width="100%">
+		<tr class="table-info">
+			<th style="text-align:center; width:20px"></th>
+
+			<th style="text-align:center;">
+				<label asp-for="@Model.FirstOrDefault().Name"></label>
+			</th>
+
+			<th style="text-align:center;">
+				<label asp-for="@Model.FirstOrDefault().Price"></label>
+			</th>
+
+			<th style="text-align:center;">
+				<label asp-for="@Model.FirstOrDefault().Spicyness"></label>
+			</th>
+
+			<th style="text-align:center;">
+				<label asp-for="@Model.FirstOrDefault().ProductTypes"></label>
+			</th>
+
+			<th style="text-align:center;"></th>
+
+		</tr>
+
+		@foreach (var item in Model)
+		{
+		<tr style="padding:50%">
+			<td>
+				<a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">
+					<img src="@item.Image" width="500%" style="margin:auto; display:block; border-radius:5px; border:1px solid #bbb9b9;" />
+				</a>
+			</td>
+			<td style="text-align:center;">
+				@Html.DisplayFor(c => item.Name)
+			</td>
+			<td style="text-align:center;">
+				@Html.DisplayFor(c => item.Price)
+			</td>
+			<td style="text-align:center;">
+				@Html.DisplayFor(c => item.Spicyness)
+			</td>
+			<td style="text-align:center;">
+				@Html.DisplayFor(c => item.ProductTypes.Name)
+			</td>
+		</tr>
+		}
+	</table>
+}
+else
+{
+	<div>No item added to cart</div>
+}

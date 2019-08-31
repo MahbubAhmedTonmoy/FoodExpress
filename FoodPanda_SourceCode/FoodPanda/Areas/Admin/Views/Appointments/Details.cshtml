@@ -1,0 +1,122 @@
+﻿@model FurnitureHouse.Models.ViewModel.AppointmentDetailsViewModel
+@using FurnitureHouse.Utility
+@using FurnitureHouse.Extensions
+@{
+	ViewData["Title"] = "Details";
+
+}
+
+<br />
+<h2 class="text-info">Details Appointment</h2>
+	<div class="p-4 border rounded row">
+
+		<div class="col-6">
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="Appointments.CustomerName"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="Appointments.CustomerName" disabled class="form-control" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="Appointments.CustomerEmail"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="Appointments.CustomerEmail" disabled class="form-control" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="Appointments.CustomerPhoneNumber"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="Appointments.CustomerPhoneNumber" disabled class="form-control" />
+				</div>
+			</div>
+
+
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="Appointments.AppointmentDate"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="Appointments.AppointmentDate" disabled id="datepicker" type="text" class="form-control" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="Appointments.AppointmentTime"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="Appointments.AppointmentTime" disabled id="timepicker" type="text" class="timepicker form-control" />
+				</div>
+			</div>
+
+
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="Appointments.SalesPerson"></label>
+				</div>
+				<div class="col-8">
+					@if (User.IsInRole(SD.SalesMan))
+					{
+						<input asp-for="@Model.Appointments.SalesPerson.Name" readonly class="form-control" />
+						<input asp-for="@Model.Appointments.SalesPersonId" hidden />
+					}
+					else
+					{
+						<select asp-for="@Model.Appointments.SalesPersonId" disabled asp-items="Model.SalesPerson.ToSelectListItemString(Model.Appointments.SalesPersonId)" class="form-control"></select>
+
+					}
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="Appointments.isConfirmed"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="Appointments.isConfirmed" disabled class="form-control" />
+				</div>
+			</div>
+
+		</div>
+
+		<div class="col-6">
+			<partial name="~/Views/Shared/_AppointmentProductDetails.cshtml" model="Model.Products" />
+		</div>
+
+		<br />
+		<div class="form-group">
+			
+			<a asp-action="Index" class="btn btn-success">Back to List</a>
+		</div>
+	</div>
+
+
+@section Scripts{
+	<script>
+		$(document).ready(function () {
+			var appointmentTime = document.getElementById('datepicker').value;
+			var splitData = "";
+			if (appointmentTime.indexOf(" ") > 0) {
+				splitData = appointmentTime.split(" ");
+			}
+			else {
+				splitData = appointmentTime.split("T");
+			}
+			var time = splitData[1].substring(0, 5);
+			if (time.slice(-1) == ":") {
+				time = time.substring(0, time.length - 1);
+			}
+			var amPmTime = splitData[2];
+			$('#datepicker').attr('value', splitData[0]);
+			$('#timepicker').attr('value', time + ' ' + amPmTime);
+		});
+	</script>
+}
